@@ -306,5 +306,34 @@
   
   
   
+  <entry>
+    <title>Lua学习</title>
+    <link href="/2022/01/01/Lua%E5%AD%A6%E4%B9%A0/"/>
+    <url>/2022/01/01/Lua%E5%AD%A6%E4%B9%A0/</url>
+    
+    <content type="html"><![CDATA[<h2 id="what-is-embedded-scripting-language">What is embedded scripting language?</h2><ul><li><a href="https://stackoverflow.com/questions/12042955/what-is-an-embedded-scripting-language">stackoverflow上的回答</a></li></ul><h2 id="command-line">Command line</h2><ul><li>lua -i prog.lua (enter interactive mode after execuating prog.lua)</li><li>dofile("prog.lua") (execuate prog.lua in interactive mode)</li><li>lua -e "print(19)" (execuate code in command line)</li></ul><h2 id="trick">Trick</h2><ul><li>Long comment <code>--[[  comment  ]]</code></li></ul><h2 id="reference">Reference</h2><ul><li><p><a href="https://github.com/dbohdan/embedded-scripting-languages">embedded scripting languages list</a></p></li><li><p><a href="https://stackoverflow.com/questions/1065584/what-is-data-driven-programming">data driven programming 1</a></p></li><li><p><a href="https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch09s01.html">data driven programming 2</a></p></li><li><p><a href="https://www.paragoncorporation.com/ArticleDetail.aspx?ArticleID=31">different between table/data driven programming</a></p></li></ul><h2 id="questions">Questions</h2><ol type="1"><li><blockquote><p>I reserve the identifier _ (a single underscore) for <strong>dummy variables</strong>.</p></blockquote></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>foundation of computer science</category>
+      
+      <category>programming language</category>
+      
+      <category>Lua</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>learning</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
   
 </search>
