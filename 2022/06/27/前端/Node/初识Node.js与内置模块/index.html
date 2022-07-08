@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="初识Node.js与内置模块 0 目标  能够知道什么是 Node.js 能够知道 Node.js 可以做什么 能够说出 Node.js 中的 JavaScript 的组成部分 能够使用 fs 模块读写操作文件 能够使用 path 模块处理路径 能够使用 http 模块写一个基本的 web 服务器  1 初识 Node.js 1.1 回顾与思考 1. 已经掌握了哪些技术  HTML CSS Jav">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Node.js与内置模块">
+<meta property="og:url" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="Solaris">
+<meta property="og:description" content="初识Node.js与内置模块 0 目标  能够知道什么是 Node.js 能够知道 Node.js 可以做什么 能够说出 Node.js 中的 JavaScript 的组成部分 能够使用 fs 模块读写操作文件 能够使用 path 模块处理路径 能够使用 http 模块写一个基本的 web 服务器  1 初识 Node.js 1.1 回顾与思考 1. 已经掌握了哪些技术  HTML CSS Jav">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170709289.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170833578.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170853990.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170953287.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627171034946.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627171145019.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140352107.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140427771.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140449178.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140527335.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140545084.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628142422259.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628142636633.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143020187.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143146624.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143228481.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143350830.png">
+<meta property="article:published_time" content="2022-06-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-30T15:48:08.927Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170709289.png">
+  
+  
+  
+  <title>初识Node.js与内置模块 - Solaris</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.1","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>索拉里斯</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="初识Node.js与内置模块"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-27 00:00" pubdate>
+          2022年6月27日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          8.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          74 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">初识Node.js与内置模块</h1>
+            
+            <div class="markdown-body">
+              
+              <h2 id="初识node.js与内置模块">初识Node.js与内置模块</h2>
+<h3 id="目标">0 目标</h3>
+<ul>
+<li>能够知道什么是 Node.js</li>
+<li>能够知道 Node.js 可以做什么</li>
+<li>能够说出 Node.js 中的 JavaScript 的组成部分</li>
+<li>能够使用 fs 模块读写操作文件</li>
+<li>能够使用 path 模块处理路径</li>
+<li>能够使用 http 模块写一个基本的 web 服务器</li>
+</ul>
+<h3 id="初识-node.js">1 初识 Node.js</h3>
+<h4 id="回顾与思考">1.1 回顾与思考</h4>
+<h5 id="已经掌握了哪些技术">1. 已经掌握了哪些技术</h5>
+<ul>
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+</ul>
+<h5 id="浏览器中的-javascript-的组成部分">2. 浏览器中的 JavaScript 的组成部分</h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170709289.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="思考为什么-javascript-可以在浏览器中被执行">3. 思考：为什么 JavaScript 可以在浏览器中被执行</h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170833578.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="思考为什么-javascript-可以操作-dom-和-bom">4. 思考：为什么 JavaScript 可以操作 DOM 和 BOM</h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170853990.png" srcset="/img/loading.gif" lazyload class="">
+<ol start="5" type="1">
+<li><h5 id="浏览器中的-javascript-运行环境">浏览器中的 JavaScript 运行环境</h5></li>
+</ol>
+<p>运行环境是指<strong>代码正常运行所需的必要环境</strong>。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627170953287.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="思考javascript-能否做后端开发">6. 思考：JavaScript 能否做后端开发</h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627171034946.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="node.js-简介">1.2 Node.js 简介</h4>
+<h5 id="什么是-node.js">1. 什么是 Node.js</h5>
+<p>Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。</p>
+<p>Node.js 的官网地址： https://nodejs.org/zh-cn/</p>
+<h5 id="node.js-中的-javascript-运行环境">2. Node.js 中的 JavaScript 运行环境</h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220627171145019.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="node.js-可以做什么">3. Node.js 可以做什么</h5>
+<p>Node.js 作为一个 JavaScript 的运行环境，仅仅提供了基础的功能和 API。然而，基于 Node.js 提供的这些基础能，很多强大的工具和框架如雨后春笋，层出不穷，所以学会了 Node.js ，可以让前端程序员胜任更多的工作和岗位： 基于 Express 框架（http://www.expressjs.com.cn/），可以快速构建 Web 应用 基于 Electron 框架（https://electronjs.org/），可以构建跨平台的桌面应用 基于 restify 框架（http://restify.com/），可以快速构建 API 接口项目 读写和操作数据库、创建实用的命令行工具辅助前端开发、etc…</p>
+<p>总之：Node.js 是大前端时代的“大宝剑”，有了 Node.js 这个超级 buff 的加持，前端程序员的行业竞争力会越来越强！</p>
+<h5 id="node.js-怎么学">4. Node.js 怎么学</h5>
+<p>浏览器中的 JavaScript 学习路径： JavaScript 基础语法 + 浏览器内置 API（DOM + BOM） + 第三方库（jQuery、art-template 等）</p>
+<p>Node.js 的学习路径： JavaScript 基础语法 + Node.js 内置 API 模块（fs、path、http等）+ 第三方 API 模块（express、mysql 等）</p>
+<h4 id="什么是-fs-文件系统模块">2.1 什么是 fs 文件系统模块</h4>
+<p>fs 模块是 Node.js 官方提供的、用来操作文件的模块。它提供了一系列的方法和属性，用来满足用户对文件的操作需求。 例如： fs.readFile() 方法，用来读取指定文件中的内容 fs.writeFile() 方法，用来向指定的文件中写入内容</p>
+<p>如果要在 JavaScript 代码中，使用 fs 模块来操作文件，则需要使用如下的方式先导入它：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="读取指定文件中的内容">2.2 读取指定文件中的内容</h4>
+<h5 id="fs.readfile-的语法格式">1. fs.readFile() 的语法格式</h5>
+<p>使用 fs.readFile() 方法，可以读取指定文件中的内容，语法格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">fs.<span class="hljs-title function_">readFile</span>(path[, options], callback)<br></code></pre></td></tr></table></figure>
+<p>参数解读：</p>
+<p>参数1：必选参数，字符串，表示文件的路径。</p>
+<p>参数2：可选参数，表示以什么编码格式来读取文件。</p>
+<p>参数3：必选参数，文件读取完成后，通过回调函数拿到读取的结果。</p>
+<h5 id="fs.readfile-的示例代码">2. fs.readFile() 的示例代码</h5>
+<p>以 utf8 的编码格式，读取指定文件的内容，并打印 err 和 dataStr 的值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 1. 导入 fs 模块，来操作文件</span><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><br><span class="hljs-comment">// 2. 调用 fs.readFile() 方法读取文件</span><br><span class="hljs-comment">//    参数1：读取文件的存放路径</span><br><span class="hljs-comment">//    参数2：读取文件时候采用的编码格式，一般默认指定 utf8</span><br><span class="hljs-comment">//    参数3：回调函数，拿到读取失败和成功的结果  err  dataStr</span><br>fs.<span class="hljs-title function_">readFile</span>(<span class="hljs-string">&#x27;./files/11.txt&#x27;</span>, <span class="hljs-string">&#x27;utf8&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">err, dataStr</span>) &#123;<br>  <span class="hljs-comment">// 2.1 打印失败的结果</span><br>  <span class="hljs-comment">// 如果读取成功，则 err 的值为 null</span><br>  <span class="hljs-comment">// 如果读取失败，则 err 的值为 错误对象，dataStr 的值为 undefined</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;-------&#x27;</span>)<br>  <span class="hljs-comment">// 2.2 打印成功的结果</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(dataStr)<br>&#125;)<br></code></pre></td></tr></table></figure>
+<h4 id="向指定的文件中写入内容">2.3 向指定的文件中写入内容</h4>
+<h5 id="fs.writefile-的语法格式">1. fs.writeFile() 的语法格式</h5>
+<blockquote>
+<p>无法创建不存在的目录</p>
+</blockquote>
+<p>使用 fs.writeFile() 方法，可以向指定的文件中写入内容，语法格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">fs.<span class="hljs-title function_">writeFile</span>(file, data[, options], callback)<br></code></pre></td></tr></table></figure>
+<p>参数解读：</p>
+<p>参数1：必选参数，需要指定一个文件路径的字符串，表示文件的存放路径。</p>
+<p>参数2：必选参数，表示要写入的内容。</p>
+<p>参数3：可选参数，表示以什么格式写入文件内容，默认值是 utf8。</p>
+<p>参数4：必选参数，文件写入完成后的回调函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 1. 导入 fs 文件系统模块</span><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><br><span class="hljs-comment">// 2. 调用 fs.writeFile() 方法，写入文件的内容</span><br><span class="hljs-comment">//    参数1：表示文件的存放路径</span><br><span class="hljs-comment">//    参数2：表示要写入的内容</span><br><span class="hljs-comment">//    参数3：回调函数</span><br>fs.<span class="hljs-title function_">writeFile</span>(<span class="hljs-string">&#x27;./files/3.txt&#x27;</span>, <span class="hljs-string">&#x27;ok123&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) &#123;<br>  <span class="hljs-comment">// 2.1 如果文件写入成功，则 err 的值等于 null</span><br>  <span class="hljs-comment">// 2.2 如果文件写入失败，则 err 的值等于一个 错误对象</span><br>  <span class="hljs-comment">// console.log(err)</span><br><br>  <span class="hljs-keyword">if</span> (err) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;文件写入失败！&#x27;</span> + err.<span class="hljs-property">message</span>)<br>  &#125;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;文件写入成功！&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+<h4 id="动态拼接文件路径名">2.4 动态拼接文件路径名</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">__dirname + <span class="hljs-string">&#x27;/file.txt&#x27;</span><br></code></pre></td></tr></table></figure>
+<h3 id="path路径模块">3 path路径模块</h3>
+<h4 id="什么是path路径模块">3.1 什么是path路径模块</h4>
+<p>path 模块是 Node.js 官方提供的、用来处理路径的模块。它提供了一系列的方法和属性，用来满足用户对路径的处理需求。</p>
+<p>例如：</p>
+<p>path.join() 方法，用来将多个路径片段拼接成一个完整的路径字符串</p>
+<p>path.basename() 方法，用来从路径字符串中，将文件名解析出来</p>
+<p>如果要在 JavaScript 代码中，使用 path 模块来处理路径，则需要使用如下的方式先导入它：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="路径拼接">3.2 路径拼接</h4>
+<h5 id="path.join-的语法格式">1. path.join() 的语法格式</h5>
+<p>使用 path.join() 方法，可以把多个路径片段拼接为完整的路径字符串，语法格式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">path.<span class="hljs-title function_">join</span>([...paths])<br></code></pre></td></tr></table></figure>
+<p>参数解读： ...paths <string> 路径片段的序列 返回值: <string></p>
+<h5 id="path.join-的代码示例">2. path.join() 的代码示例</h5>
+<p>使用 path.join() 方法，可以把多个路径片段拼接为完整的路径字符串：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140352107.png" srcset="/img/loading.gif" lazyload class="">
+<p>注意：今后凡是涉及到路径拼接的操作，都要使用 path.join() 方法进行处理。不要直接使用 + 进行字符串的拼接。</p>
+<h4 id="获取路径中的文件名">3.3 获取路径中的文件名</h4>
+<h5 id="path.basename-的语法格式">1. path.basename() 的语法格式</h5>
+<p>使用 path.basename() 方法，可以获取路径中的最后一部分，经常通过这个方法获取路径中的文件名，语法格式如下：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140427771.png" srcset="/img/loading.gif" lazyload class="">
+<p>参数解读： path <string> 必选参数，表示一个路径的字符串 ext <string> 可选参数，表示文件扩展名 返回: <string> 表示路径中的最后一部分</p>
+<h5 id="path.basename-的代码示例">2. path.basename() 的代码示例</h5>
+<p>使用 path.basename() 方法，可以从一个文件路径中，获取到文件的名称部分：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140449178.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="获取路径中的文件扩展名">3.4 获取路径中的文件扩展名</h4>
+<h5 id="path.extname-的语法格式">1. path.extname() 的语法格式</h5>
+<p>使用 path.extname() 方法，可以获取路径中的扩展名部分，语法格式如下：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140527335.png" srcset="/img/loading.gif" lazyload class="">
+<p>参数解读： path <string>必选参数，表示一个路径的字符串 返回: <string> 返回得到的扩展名字符串</p>
+<h5 id="path.extname-的代码示例">2. path.extname() 的代码示例</h5>
+<p>使用 path.extname() 方法，可以获取路径中的扩展名部分：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628140545084.png" srcset="/img/loading.gif" lazyload class="">
+<p>3.5 综合案例</p>
+<blockquote>
+<p>正则处理html文件，将html文件中css和javascript内容提取出来</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 1.1 导入 fs 模块</span><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><span class="hljs-comment">// 1.2 导入 path 模块</span><br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br><br><span class="hljs-comment">// 1.3 定义正则表达式，分别匹配 &lt;style&gt;&lt;/style&gt; 和 &lt;script&gt;&lt;/script&gt; 标签</span><br><span class="hljs-keyword">const</span> regStyle = <span class="hljs-regexp">/&lt;style&gt;[\s\S]*&lt;\/style&gt;/</span><br><span class="hljs-keyword">const</span> regScript = <span class="hljs-regexp">/&lt;script&gt;[\s\S]*&lt;\/script&gt;/</span><br><br><span class="hljs-comment">// 2.1 调用 fs.readFile() 方法读取文件</span><br>fs.<span class="hljs-title function_">readFile</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&#x27;../素材/index.html&#x27;</span>), <span class="hljs-string">&#x27;utf8&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">err, dataStr</span>) &#123;<br>  <span class="hljs-comment">// 2.2 读取 HTML 文件失败</span><br>  <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;读取HTML文件失败！&#x27;</span> + err.<span class="hljs-property">message</span>)<br>  <span class="hljs-comment">// 2.3 读取文件成功后，调用对应的三个方法，分别拆解出 css, js, html 文件</span><br>  <span class="hljs-title function_">resolveCSS</span>(dataStr)<br>  <span class="hljs-title function_">resolveJS</span>(dataStr)<br>  <span class="hljs-title function_">resolveHTML</span>(dataStr)<br>&#125;)<br><br><span class="hljs-comment">// 3.1 定义处理 css 样式的方法</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">resolveCSS</span>(<span class="hljs-params">htmlStr</span>) &#123;<br>  <span class="hljs-comment">// 3.2 使用正则提取需要的内容</span><br>  <span class="hljs-keyword">const</span> r1 = regStyle.<span class="hljs-title function_">exec</span>(htmlStr)<br>  <span class="hljs-comment">// 3.3 将提取出来的样式字符串，进行字符串的 replace 替换操作</span><br>  <span class="hljs-keyword">const</span> newCSS = r1[<span class="hljs-number">0</span>].<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;&lt;style&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>).<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;&lt;/style&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>  <span class="hljs-comment">// 3.4 调用 fs.writeFile() 方法，将提取的样式，写入到 clock 目录中 index.css 的文件里面</span><br>  fs.<span class="hljs-title function_">writeFile</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&#x27;./clock/index.css&#x27;</span>), newCSS, <span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) &#123;<br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;写入 CSS 样式失败！&#x27;</span> + err.<span class="hljs-property">message</span>)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;写入样式文件成功！&#x27;</span>)<br>  &#125;)<br>&#125;<br><br><span class="hljs-comment">// 4.1 定义处理 js 脚本的方法</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">resolveJS</span>(<span class="hljs-params">htmlStr</span>) &#123;<br>  <span class="hljs-comment">// 4.2 通过正则，提取对应的 &lt;script&gt;&lt;/script&gt; 标签内容</span><br>  <span class="hljs-keyword">const</span> r2 = regScript.<span class="hljs-title function_">exec</span>(htmlStr)<br>  <span class="hljs-comment">// 4.3 将提取出来的内容，做进一步的处理</span><br>  <span class="hljs-keyword">const</span> newJS = r2[<span class="hljs-number">0</span>].<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>).<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;&lt;/script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>  <span class="hljs-comment">// 4.4 将处理的结果，写入到 clock 目录中的 index.js 文件里面</span><br>  fs.<span class="hljs-title function_">writeFile</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&#x27;./clock/index.js&#x27;</span>), newJS, <span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) &#123;<br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;写入 JavaScript 脚本失败！&#x27;</span> + err.<span class="hljs-property">message</span>)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;写入 JS 脚本成功！&#x27;</span>)<br>  &#125;)<br>&#125;<br><br><span class="hljs-comment">// 5.1 定义处理 HTML 结构的方法</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">resolveHTML</span>(<span class="hljs-params">htmlStr</span>) &#123;<br>  <span class="hljs-comment">// 5.2 将字符串调用 replace 方法，把内嵌的 style 和 script 标签，替换为外联的 link 和 script 标签</span><br>  <span class="hljs-keyword">const</span> newHTML = htmlStr.<span class="hljs-title function_">replace</span>(regStyle, <span class="hljs-string">&#x27;&lt;link rel=&quot;stylesheet&quot; href=&quot;./index.css&quot; /&gt;&#x27;</span>).<span class="hljs-title function_">replace</span>(regScript, <span class="hljs-string">&#x27;&lt;script src=&quot;./index.js&quot;&gt;&lt;/script&gt;&#x27;</span>)<br>  <span class="hljs-comment">// 5.3 写入 index.html 这个文件</span><br>  fs.<span class="hljs-title function_">writeFile</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&#x27;./clock/index.html&#x27;</span>), newHTML, <span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) &#123;<br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;写入 HTML 文件失败！&#x27;</span> + err.<span class="hljs-property">message</span>)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;写入 HTML 页面成功！&#x27;</span>)<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="http-模块">4. http 模块</h3>
+<h4 id="什么是-http-模块">4.1 什么是 http 模块</h4>
+<p>回顾：什么是客户端、什么是服务器？</p>
+<p>在网络节点中，负责消费资源的电脑，叫做客户端；负责对外提供网络资源的电脑，叫做服务器。</p>
+<p>http 模块是 Node.js 官方提供的、用来创建 web 服务器的模块。通过 http 模块提供的 http.createServer() 方法，就能方便的把一台普通的电脑，变成一台 Web 服务器，从而对外提供 Web 资源服务。</p>
+<p>如果要希望使用 http 模块创建 Web 服务器，则需要先导入它：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628142422259.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="进一步理解-http-模块的作用">4.2 进一步理解 http 模块的作用</h4>
+<p>服务器和普通电脑的<strong>区别</strong>在于，服务器上安装了 web 服务器软件，例如：IIS、Apache 等。通过安装这些服务器软件，就能把一台普通的电脑变成一台 web 服务器。</p>
+<p>在 Node.js 中，我们不需要使用 IIS、Apache 等这些第三方 web 服务器软件。因为我们可以基于 Node.js 提供的 http 模块，<strong>通过几行简单的代码，就能轻松的手写一个服务器软件</strong>，从而对外提供 web 服务。</p>
+<h4 id="服务器相关的概念">4.3 服务器相关的概念</h4>
+<h5 id="ip-地址">1. IP 地址</h5>
+<p><strong>IP</strong> <strong>地址</strong>就是互联网上每台计算机的唯一地址，因此 IP 地址具有唯一性。如果把“个人电脑”比作“一台电话”，那么“IP地址”就相当于“电话号码”，只有在知道对方 IP 地址的前提下，才能与对应的电脑之间进行数据通信。</p>
+<p>IP 地址的格式：通常用“点分十进制”表示成（a.b.c.d）的形式，其中，a,b,c,d 都是 0~255 之间的十进制整数。例如：用点分十进表示的 IP地址（192.168.1.1）</p>
+<p>注意：</p>
+<p>①<strong>互联网中每台</strong> <strong>Web</strong> <strong>服务器，都有自己的</strong> <strong>IP</strong> <strong>地址</strong>，例如：大家可以在 Windows 的终端中运行 ping www.baidu.com 命令，即可查看到百度服务器的 IP 地址。</p>
+<p>②在开发期间，自己的电脑既是一台服务器，也是一个客户端，为了方便测试，可以在自己的浏览器中输入 127.0.0.1 这个 IP 地址，就能把自己的电脑当做一台服务器进行访问了。</p>
+<h5 id="域名和域名服务器">2. 域名和域名服务器</h5>
+<p>尽管 IP 地址能够唯一地标记网络上的计算机，但IP地址是一长串数字，不直观，而且不便于记忆，于是人们又发明了另一套字符型的地址方案，即所谓的域名（Domain Name）地址。</p>
+<p>IP地址和域名是一一对应的关系，这份对应关系存放在一种叫做<strong>域名服务器</strong>(DNS，Domain name server)的电脑中。使用者只需通过好记的域名访问对应的服务器即可，对应的转换工作由域名服务器实现。因此，<strong>域名服务器就是提供</strong> <strong>IP</strong> <strong>地址和域名之间的转换服务的服务器</strong>。</p>
+<p>注意：</p>
+<p>①单纯使用 IP 地址，互联网中的电脑也能够正常工作。但是有了域名的加持，能让互联网的世界变得更加方便。</p>
+<p>②在开发测试期间， 127.0.0.1 对应的域名是 localhost，它们都代表我们自己的这台电脑，在使用效果上没有任何区别。</p>
+<h5 id="端口号">3. 端口号</h5>
+<p>计算机中的端口号，就好像是现实生活中的门牌号一样。通过门牌号，外卖小哥可以在整栋大楼众多的房间中，准确把外卖送到你的手中。</p>
+<p>同样的道理，在一台电脑中，可以运行成百上千个 web 服务。每个 web 服务都对应一个唯一的端口号。客户端发送过来的网络请求，通过端口号，可以被准确地交给对应的 web 服务进行处理。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628142636633.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="创建最基本的-web-服务器">4.4 创建最基本的 web 服务器</h4>
+<h5 id="创建-web-服务器的基本步骤">1. 创建 web 服务器的基本步骤</h5>
+<p>①导入 http 模块</p>
+<p>②创建 web 服务器实例</p>
+<p>③为服务器实例绑定 <strong>request</strong> 事件，监听客户端的请求</p>
+<p>④启动服务器</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 1. 导入 http 模块</span><br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-comment">// 2. 创建 web 服务器实例</span><br><span class="hljs-keyword">const</span> server = http.<span class="hljs-title function_">createServer</span>()<br><span class="hljs-comment">// 3. 为服务器实例绑定 request 事件，监听客户端的请求</span><br>server.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">req, res</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Someone visit our web server.&#x27;</span>)<br>&#125;)<br><span class="hljs-comment">// 4. 启动服务器</span><br>server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">8081</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;  <br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;server running at http://127.0.0.1:8081&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+<h5 id="req-请求对象"><strong>3.</strong> <strong>req</strong> <strong>请求对象</strong></h5>
+<p>只要服务器接收到了客户端的请求，就会调用通过 server.on() 为服务器绑定的 request 事件处理函数。</p>
+<p>如果想在事件处理函数中，访问与客户端相关的<strong>数据</strong>或<strong>属性</strong>，可以使用如下的方式：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143020187.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="res-响应对象"><strong>4.</strong> <strong>res</strong> <strong>响应对象</strong></h5>
+<p>在服务器的 request 事件处理函数中，如果想访问与服务器相关的<strong>数据</strong>或<strong>属性</strong>，可以使用如下的方式：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143146624.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="解决中文乱码问题">5 解决中文乱码问题</h5>
+<p>当调用 res.end() 方法，向客户端发送中文内容的时候，会出现乱码问题，此时，需要手动设置内容的编码格式：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143228481.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="根据不同的-url-响应不同的-html-内容">4.5 根据不同的 url 响应不同的 html 内容</h4>
+<p><strong>1.</strong> <strong>核心实现步骤</strong></p>
+<p>①获取请求的 url 地址</p>
+<p>②设置默认的响应内容为 404 Not found</p>
+<p>③判断用户请求的是否为 / 或 /index.html 首页</p>
+<p>④判断用户请求的是否为 /about.html 关于页面</p>
+<p>⑤设置 Content-Type 响应头，防止中文乱码</p>
+<p>⑥使用 res.end() 把内容响应给客户端</p>
+<ol start="2" type="1">
+<li><h5 id="响应动态内容">响应动态内容</h5></li>
+</ol>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/Node/%E5%88%9D%E8%AF%86Node.js%E4%B8%8E%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/image-20220628143350830.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="案例---实现-clock-时钟的-web-服务器">4.6 案例 - 实现 clock 时钟的 web 服务器</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 1.1 导入 http 模块</span><br><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>)<br><span class="hljs-comment">// 1.2 导入 fs 模块</span><br><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>)<br><span class="hljs-comment">// 1.3 导入 path 模块</span><br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;path&#x27;</span>)<br><br><span class="hljs-comment">// 2.1 创建 web 服务器</span><br><span class="hljs-keyword">const</span> server = http.<span class="hljs-title function_">createServer</span>()<br><span class="hljs-comment">// 2.2 监听 web 服务器的 request 事件</span><br>server.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-comment">// 3.1 获取到客户端请求的 URL 地址</span><br>  <span class="hljs-comment">//     /clock/index.html</span><br>  <span class="hljs-comment">//     /clock/index.css</span><br>  <span class="hljs-comment">//     /clock/index.js</span><br>  <span class="hljs-keyword">const</span> url = req.<span class="hljs-property">url</span><br>  <span class="hljs-comment">// 3.2 把请求的 URL 地址映射为具体文件的存放路径</span><br>  <span class="hljs-comment">// const fpath = path.join(__dirname, url)</span><br>  <span class="hljs-comment">// 5.1 预定义一个空白的文件存放路径</span><br>  <span class="hljs-keyword">let</span> fpath = <span class="hljs-string">&#x27;&#x27;</span><br>  <span class="hljs-keyword">if</span> (url === <span class="hljs-string">&#x27;/&#x27;</span>) &#123;<br>    fpath = path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&#x27;./clock/index.html&#x27;</span>)<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">//     /index.html</span><br>    <span class="hljs-comment">//     /index.css</span><br>    <span class="hljs-comment">//     /index.js</span><br>    fpath = path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&#x27;/clock&#x27;</span>, url)<br>  &#125;<br><br>  <span class="hljs-comment">// 4.1 根据“映射”过来的文件路径读取文件的内容</span><br>  fs.<span class="hljs-title function_">readFile</span>(fpath, <span class="hljs-string">&#x27;utf8&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">err, dataStr</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 4.2 读取失败，向客户端响应固定的“错误消息”</span><br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> res.<span class="hljs-title function_">end</span>(<span class="hljs-string">&#x27;404 Not found.&#x27;</span>)<br>    <span class="hljs-comment">// 4.3 读取成功，将读取成功的内容，响应给客户端</span><br>    res.<span class="hljs-title function_">end</span>(dataStr)<br>  &#125;)<br>&#125;)<br><span class="hljs-comment">// 2.3 启动服务器</span><br>server.<span class="hljs-title function_">listen</span>(<span class="hljs-number">80</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;server running at http://127.0.0.1&#x27;</span>)<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/Node/" class="category-chain-item">Node</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/06/27/%E6%9D%82%E9%A1%B9/Nginx/" title="Nginx">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Nginx</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/Ajax%E5%8A%A0%E5%BC%BA/" title="Ajax加强">
+                        <span class="hidden-mobile">Ajax加强</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,967 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HTTP协议加强 0 学习目标  能够说出什么是HTTP协议 能够知道HTTP请求消息的组成部分 能够知道HTTP响应消息的组成部分 能够说出常见的请求方法 能够说出常见的响应状态码  1 HTTP协议简介 1.1 什么是通信 通信，就是信息的传递和交换。 通信三要素：  通信的主体 通信的内容 通信的方式  1 现实生活中的通信 案例：张三要把自己考上传智专修学院的好消息写信告诉自己的好朋友李四">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP协议加强">
+<meta property="og:url" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/index.html">
+<meta property="og:site_name" content="Solaris">
+<meta property="og:description" content="HTTP协议加强 0 学习目标  能够说出什么是HTTP协议 能够知道HTTP请求消息的组成部分 能够知道HTTP响应消息的组成部分 能够说出常见的请求方法 能够说出常见的响应状态码  1 HTTP协议简介 1.1 什么是通信 通信，就是信息的传递和交换。 通信三要素：  通信的主体 通信的内容 通信的方式  1 现实生活中的通信 案例：张三要把自己考上传智专修学院的好消息写信告诉自己的好朋友李四">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627114504849.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140401225.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140441476.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140456901.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140500688.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140519032.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140549900.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140616063.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140629259.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140643663.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140709082.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140720111.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140722884-6310043.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140743553.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140756430.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140812801.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140829446.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140832981.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140842555.png">
+<meta property="og:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140937309.png">
+<meta property="article:published_time" content="2022-06-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-28T09:07:57.549Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627114504849.png">
+  
+  
+  
+  <title>HTTP协议加强 - Solaris</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.1","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>索拉里斯</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HTTP协议加强"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-27 00:00" pubdate>
+          2022年6月27日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HTTP协议加强</h1>
+            
+            <div class="markdown-body">
+              
+              <h2 id="http协议加强">HTTP协议加强</h2>
+<h3 id="学习目标">0 学习目标</h3>
+<ul>
+<li>能够说出什么是HTTP协议</li>
+<li>能够知道HTTP请求消息的组成部分</li>
+<li>能够知道HTTP响应消息的组成部分</li>
+<li>能够说出常见的请求方法</li>
+<li>能够说出常见的响应状态码</li>
+</ul>
+<h3 id="http协议简介">1 HTTP协议简介</h3>
+<h4 id="什么是通信"><strong>1.1</strong> <strong>什么是通信</strong></h4>
+<p>通信，就是<strong>信息的传递和交换</strong>。</p>
+<p>通信三要素：</p>
+<ul>
+<li>通信的主体</li>
+<li>通信的内容</li>
+<li>通信的方式</li>
+</ul>
+<h5 id="现实生活中的通信"><strong>1</strong> <strong>现实生活中的通信</strong></h5>
+<p>案例：<strong>张三</strong>要把自己考上传智专修学院的好消息写信告诉自己的好朋友<strong>李四</strong>。</p>
+<p>其中：</p>
+<ul>
+<li>通信的主体是张三和李四；</li>
+<li>通信的内容是考上传智专修学院；</li>
+<li>通信的方式是写信；</li>
+</ul>
+<h5 id="互联网中的通信"><strong>2.</strong> <strong>互联网中的通信</strong></h5>
+<p>案例：服务器把传智专修学院的简介通过响应的方式发送给客户端浏览器。</p>
+<p>其中：</p>
+<ul>
+<li>通信的主体是服务器和客户端浏览器；</li>
+<li>通信的内容是传智专修学院的简介；</li>
+<li>通信的方式是响应；</li>
+</ul>
+<h4 id="什么是通信协议"><strong>1.2</strong> <strong>什么是通信协议</strong></h4>
+<p><strong>通信协议</strong>（Communication Protocol）是指通信的双方完成通信所必须遵守的规则和约定。</p>
+<p>通俗的理解：通信双方采用约定好的格式来发送和接收消息，这种事先约定好的通信格式，就叫做通信协议。</p>
+<h5 id="现实生活中的通信协议"><strong>1.</strong> <strong>现实生活中的通信协议</strong></h5>
+<p>张三与李四采用写信的方式进行通信，在填写信封时，写信的双方需要遵守固定的规则。信封的填写规则就是一种通信协议。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627114504849.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="互联网中的通信协议"><strong>2.</strong> <strong>互联网中的通信协议</strong></h5>
+<p>客户端与服务器之间要实现网页内容的传输，则通信的双方必须遵守网页内容的传输协议。</p>
+<p>网页内容又叫做<strong>超文本</strong>，因此网页内容的传输协议又叫做<strong>超文本传输协议</strong>（HyperText Transfer Protocol） ，简称 <strong>HTTP</strong> <strong>协议</strong>。</p>
+<h4 id="http"><strong>1.3 HTTP</strong></h4>
+<h5 id="什么是http协议">什么是HTTP协议</h5>
+<p><strong>HTTP</strong> <strong>协议</strong>即超文本传送协议 (HyperText Transfer Protocol) ，它规定了客户端与服务器之间进行网页内容传输时，所必须遵守的传输格式。</p>
+<p>例如：</p>
+<ul>
+<li>客户端要以HTTP协议要求的格式把数据提交到服务器</li>
+<li>服务器要以HTTP协议要求的格式把内容响应给客户端</li>
+</ul>
+<h5 id="http协议的交互模型"><strong>2 HTTP</strong>协议的交互模型</h5>
+<p>HTTP 协议采用了请求/响应的交互模型。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140401225.png" srcset="/img/loading.gif" lazyload class="">
+<h3 id="http请求">2 HTTP请求</h3>
+<h4 id="什么是http请求"><strong>2.1</strong> <strong>什么是</strong>HTTP请求</h4>
+<p>由于 HTTP 协议属于客户端浏览器和服务器之间的通信协议。因此，客户端发起的请求叫做 <strong>HTTP</strong> <strong>请求</strong>，客户端发送到服务器的消息，叫做 <strong>HTTP</strong> <strong>请求消息</strong>。</p>
+<p>注意：HTTP 请求消息又叫做 HTTP 请求报文。</p>
+<h4 id="http请求消息的组成部分"><strong>2.2 HTTP</strong>请求消息的组成部分</h4>
+<p>HTTP 请求消息由请求行（request line）、请求头部（ header ） 、空行 和 请求体 4 个部分组成。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140441476.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="请求行"><strong>1.</strong> <strong>请求行</strong></h5>
+<p><strong>请求行</strong>由请求方式、URL 和 HTTP 协议版本 3 个部分组成，他们之间使用空格隔开。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140456901.png" srcset="/img/loading.gif" lazyload class="">
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140500688.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="请求头部"><strong>2.</strong> <strong>请求头部</strong></h5>
+<p><strong>请求头部</strong>用来描述客户端的基本信息，从而把客户端相关的信息告知服务器。比如：User-Agent 用来说明当前是什么类型的浏览器；Content-Type 用来描述发送到服务器的数据格式；Accept 用来描述客户端能够接收什么类型的返回内容；Accept-Language 用来描述客户端期望接收哪种人类语言的文本内容。</p>
+<p>请求头部由多行 键/值对 组成，每行的键和值之间用英文的冒号分隔。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140519032.png" srcset="/img/loading.gif" lazyload class="">
+<p>常见的请求头字</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140549900.png" srcset="/img/loading.gif" lazyload class="">
+<p>关于更多请求头字段的描述，可以查看 MDN 官方文档：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers</p>
+<h5 id="空行"><strong>3.</strong> <strong>空行</strong></h5>
+<p>最后一个请求头字段的后面是一个<strong>空行</strong>，通知服务器请求头部至此结束。</p>
+<p>请求消息中的空行，用来分隔请求头部与请求体。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140616063.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="请求体"><strong>4.</strong> <strong>请求体</strong></h5>
+<p>请求体中存放的，是要通过 POST 方式提交到服务器的数据。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140629259.png" srcset="/img/loading.gif" lazyload class="">
+<p><strong>注意</strong>：只有 POST 请求才有请求体，GET 请求没有请求体！</p>
+<h5 id="总结"><strong>5.</strong> <strong>总结</strong></h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140643663.png" srcset="/img/loading.gif" lazyload class="">
+<h3 id="http响应">3 HTTP响应</h3>
+<h4 id="什么是http响应"><strong>3.1</strong> <strong>什么是</strong>HTTP响应</h4>
+<p>响应消息就是服务器响应给客户端的消息内容，也叫作响应报文。</p>
+<h4 id="http响应消息的组成部分"><strong>3.2 HTTP</strong>响应消息的组成部分</h4>
+<p>HTTP响应消息由状态行、响应头部、空行 和 响应体 4 个部分组成，如下图所示：</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140709082.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="状态行"><strong>1.</strong> <strong>状态行</strong></h5>
+<p><strong>状态行</strong>由 HTTP 协议版本、状态码和状态码的描述文本 3 个部分组成，他们之间使用空格隔开;</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140720111.png" srcset="/img/loading.gif" lazyload class="">
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140722884-6310043.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="响应头部"><strong>2.</strong> <strong>响应头部</strong></h5>
+<p><strong>响应头部</strong>用来描述服务器的基本信息。响应头部由多行 键/值对 组成，每行的键和值之间用英文的冒号分隔。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140743553.png" srcset="/img/loading.gif" lazyload class="">
+<p>常见的响应头字段</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140756430.png" srcset="/img/loading.gif" lazyload class="">
+<p>关于更多响应头字段的描述，可以查看 MDN 官方文档：https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers</p>
+<h5 id="空行-1"><strong>3.</strong> <strong>空行</strong></h5>
+<p>在最后一个响应头部字段结束之后，会紧跟一个<strong>空行</strong>，用来通知客户端响应头部至此结束。</p>
+<p>响应消息中的空行，用来分隔响应头部与响应体。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140812801.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="响应体"><strong>4.</strong> <strong>响应体</strong></h5>
+<p>响应体中存放的，是服务器响应给客户端的资源内容。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140829446.png" srcset="/img/loading.gif" lazyload class="">
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140832981.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="总结-1"><strong>5.</strong> <strong>总结</strong></h5>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140842555.png" srcset="/img/loading.gif" lazyload class="">
+<h3 id="http请求方法">4 HTTP请求方法</h3>
+<h4 id="什么是http请求方法"><strong>4.1</strong> 什么是HTTP请求方法</h4>
+<p>HTTP 请求方法，属于 HTTP 协议中的一部分，请求方法的作用是：用来表明要对服务器上的资源执行的操作。最常用的请求方法是 GET 和 POST。</p>
+<h4 id="http的请求方法"><strong>4.2 HTTP</strong>的请求方法</h4>
+<table>
+<thead>
+<tr class="header">
+<th><strong>序号</strong></th>
+<th><strong>方法</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>GET</td>
+<td>(查询)发送请求来获得服务器上的资源，请求体中不会包含请求数据，请求数据放在协议头中。</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>POST</td>
+<td>(新增)向服务器提交资源（例如提交表单或上传文件）。数据被包含在请求体中提交给服务器。</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>PUT</td>
+<td>(修改)向服务器提交资源，并使用提交的新资源，替换掉服务器对应的旧资源。</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>DELETE</td>
+<td>(删除)请求服务器删除指定的资源。</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>HEAD</td>
+<td>HEAD 方法请求一个与 GET 请求的响应相同的响应，但没有响应体。</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>OPTIONS</td>
+<td>获取http服务器支持的http请求方法，允许客户端查看服务器的性能，比如ajax跨域时的预检等。</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>CONNECT</td>
+<td>建立一个到由目标资源标识的服务器的隧道。</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>TRACE</td>
+<td>沿着到目标资源的路径执行一个消息环回测试，主要用于测试或诊断。</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>PATCH</td>
+<td>是对 PUT 方法的补充，用来对已知资源进行局部更新 。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="http响应状态代码">5 HTTP响应状态代码</h3>
+<h4 id="什么是http响应状态码"><strong>5.1</strong> <strong>什么是</strong>HTTP响应状态码</h4>
+<p><strong>HTTP</strong> <strong>响应状态码</strong>（HTTP Status Code），也属于 HTTP 协议的一部分，用来标识响应的状态。</p>
+<p>响应状态码会随着响应消息一起被发送至客户端浏览器，浏览器根据服务器返回的响应状态码，就能知道这次 HTTP 请求的结果是成功还是失败了。</p>
+<img src="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/HTTP%E5%8D%8F%E8%AE%AE%E5%8A%A0%E5%BC%BA/image-20220627140937309.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="http响应状态码的组成及分类"><strong>5.2 HTTP</strong>响应状态码的组成及分类</h4>
+<p>HTTP 状态码由三个十进制数字组成，第一个十进制数字定义了状态码的类型，后两个数字用来对状态码进行细分。</p>
+<p>HTTP 状态码共分为 5 种类型：</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>分类</strong></th>
+<th><strong>分类描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1**</td>
+<td>信息，服务器收到请求，需要请求者继续执行操作（实际开发中很少遇到 1** 类型的状态码）</td>
+</tr>
+<tr class="even">
+<td>2**</td>
+<td>成功，操作被成功接收并处理</td>
+</tr>
+<tr class="odd">
+<td>3**</td>
+<td>重定向，需要进一步的操作以完成请求</td>
+</tr>
+<tr class="even">
+<td>4**</td>
+<td>客户端错误，请求包含语法错误或无法完成请求</td>
+</tr>
+<tr class="odd">
+<td>5**</td>
+<td>服务器错误，服务器在处理请求的过程中发生了错误</td>
+</tr>
+</tbody>
+</table>
+<p>完整的 HTTP 响应状态码，可以参考 MDN 官方文档 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status</p>
+<h4 id="常见的http响应状态码"><strong>5.3</strong> <strong>常见的</strong>HTTP响应状态码</h4>
+<h5 id="成功相关的响应状态码"><strong>1</strong> <strong>2</strong>** 成功相关的响应状态码</h5>
+<p>2** 范围的状态码，表示服务器已成功接收到请求并进行处理。常见的 2** 类型的状态码如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>状态码</strong></th>
+<th><strong>状态码英文名称</strong></th>
+<th><strong>中文描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>200</td>
+<td>OK</td>
+<td>请求成功。一般用于 GET 与 POST 请求</td>
+</tr>
+<tr class="even">
+<td>201</td>
+<td>Created</td>
+<td>已创建。成功请求并创建了新的资源，通常用于 POST 或 PUT 请求</td>
+</tr>
+</tbody>
+</table>
+<h5 id="重定向相关的响应状态码"><strong>2</strong> 3** 重定向相关的响应状态码</h5>
+<p>3** 范围的状态码，表示表示服务器要求客户端重定向，需要客户端进一步的操作以完成资源的请求。常见的 3** 类型的状态码如下：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th><strong>状态码</strong></th>
+<th><strong>状态码英文名称</strong></th>
+<th><strong>中文描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>301</td>
+<td>Moved Permanently</td>
+<td>永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</td>
+</tr>
+<tr class="even">
+<td>302</td>
+<td>Found</td>
+<td>临时移动。与301类似。但资源只是临时被移动。客户端应继续使用原有URI</td>
+</tr>
+<tr class="odd">
+<td>304</td>
+<td>Not Modified</td>
+<td>未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源（响应消息中不包含响应体）。客户端通常会缓存访问过的资源。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="客户端错误相关的响应状态码">3 <strong>4</strong>*<strong>* 客户端错误相关</strong>的响应状态码</h5>
+<p>4** 范围的状态码，表示客户端的请求有非法内容，从而导致这次请求失败。常见的 4** 类型的状态码如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>状态码</strong></th>
+<th><strong>状态码英文名称</strong></th>
+<th><strong>中文描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>400</td>
+<td>Bad Request</td>
+<td>1、语义有误，当前请求无法被服务器理解。除非进行修改，否则客户端不应该重复提交这个请求。 2、请求参数有误。</td>
+</tr>
+<tr class="even">
+<td>401</td>
+<td>Unauthorized</td>
+<td>当前请求需要用户验证。</td>
+</tr>
+<tr class="odd">
+<td>403</td>
+<td>Forbidden</td>
+<td>服务器已经理解请求，但是拒绝执行它。</td>
+</tr>
+<tr class="even">
+<td>404</td>
+<td>Not Found</td>
+<td>服务器无法根据客户端的请求找到资源（网页）。</td>
+</tr>
+<tr class="odd">
+<td>408</td>
+<td>Request Timeout</td>
+<td>请求超时。服务器等待客户端发送的请求时间过长，超时。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="服务端错误相关的响应状态码"><strong>3.</strong> <strong>5</strong>*<strong>* 服务端错误相关</strong>的响应状态码</h5>
+<p>5** 范围的状态码，表示服务器未能正常处理客户端的请求而出现意外错误。常见的 5** 类型的状态码如下：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th><strong>状态码</strong></th>
+<th><strong>状态码英文名称</strong></th>
+<th><strong>中文描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>500</td>
+<td>Internal Server Error</td>
+<td>服务器内部错误，无法完成请求。</td>
+</tr>
+<tr class="even">
+<td>501</td>
+<td>Not Implemented</td>
+<td>服务器不支持该请求方法，无法完成请求。只有 GET 和 HEAD 请求方法是要求每个服务器必须支持的，其它请求方法在不支持的服务器上会返回501</td>
+</tr>
+<tr class="odd">
+<td>503</td>
+<td>Service Unavailable</td>
+<td>由于超载或系统维护，服务器暂时的无法处理客户端的请求。</td>
+</tr>
+</tbody>
+</table>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/" class="category-chain-item">Ajax</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/Ajax%E5%8A%A0%E5%BC%BA/" title="Ajax加强">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Ajax加强</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/06/27/%E5%89%8D%E7%AB%AF/JavaScript/Ajax/%E8%B7%A8%E5%9F%9F%E5%92%8CJSONP/" title="跨域和JSONP">
+                        <span class="hidden-mobile">跨域和JSONP</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

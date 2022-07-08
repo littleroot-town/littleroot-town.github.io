@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="模块化 0 目标  能够说出模块化的好处 能够知道 CommonJS 规定了哪些内容 能够说出 Node.js 中模块的三大分类各自是什么 能够使用 npm 管理包 能够了解什么是规范的包结构 能够了解模块的加载机制  1. 模块化的基本概念 1.1 什么是模块化 模块化是指解决一个复杂问题时，自顶向下逐层把系统划分成若干模块的过程。对于整个系统来说，模块是可组合、分解和更换的单元。 编程领域中的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模块化">
+<meta property="og:url" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/index.html">
+<meta property="og:site_name" content="Solaris">
+<meta property="og:description" content="模块化 0 目标  能够说出模块化的好处 能够知道 CommonJS 规定了哪些内容 能够说出 Node.js 中模块的三大分类各自是什么 能够使用 npm 管理包 能够了解什么是规范的包结构 能够了解模块的加载机制  1. 模块化的基本概念 1.1 什么是模块化 模块化是指解决一个复杂问题时，自顶向下逐层把系统划分成若干模块的过程。对于整个系统来说，模块是可组合、分解和更换的单元。 编程领域中的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145330186.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145406719.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145442859.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145502616.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145522908.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145535052.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145607392.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150158708.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150222187.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150321040.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150400382.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150406561.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150440375.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150529540.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150609347.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150647133.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150728661.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150911368.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150935695.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151101118.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151318545.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151527577.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151547666.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628153428183.png">
+<meta property="og:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628152549855.png">
+<meta property="article:published_time" content="2022-06-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-30T15:48:08.927Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145330186.png">
+  
+  
+  
+  <title>模块化 - Solaris</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.1","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>索拉里斯</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="模块化"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-06-28 00:00" pubdate>
+          2022年6月28日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          6.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">模块化</h1>
+            
+            <div class="markdown-body">
+              
+              <h2 id="模块化">模块化</h2>
+<h3 id="目标">0 目标</h3>
+<ul>
+<li>能够说出模块化的好处</li>
+<li>能够知道 CommonJS 规定了哪些内容</li>
+<li>能够说出 Node.js 中模块的三大分类各自是什么</li>
+<li>能够使用 npm 管理包</li>
+<li>能够了解什么是规范的包结构</li>
+<li>能够了解模块的加载机制</li>
+</ul>
+<h3 id="模块化的基本概念">1. 模块化的基本概念</h3>
+<h4 id="什么是模块化">1.1 什么是模块化</h4>
+<p><strong>模块化</strong>是指解决一个复杂问题时，自顶向下逐层把系统划分成若干模块的过程。对于整个系统来说，模块是可组合、分解和更换的单元。</p>
+<p>编程领域中的模块化，就是<strong>遵守固定的规则</strong>，把一个大文件拆成独立并互相依赖的多个小模块。</p>
+<p>把代码进行模块化拆分的好处：</p>
+<p>①提高了代码的复用性</p>
+<p>②提高了代码的可维护性</p>
+<p>③可以实现按需加载</p>
+<h4 id="模块化规范">1.2 模块化规范</h4>
+<p><strong>模块化规范</strong>就是对代码进行模块化的拆分与组合时，需要遵守的那些规则。</p>
+<p>例如：</p>
+<ul>
+<li>使用什么样的语法格式来引用模块</li>
+<li>在模块中使用什么样的语法格式向外暴露成员</li>
+</ul>
+<p><strong>模块化规范的好处</strong>：大家都遵守同样的模块化规范写代码，降低了沟通的成本，极大方便了各个模块之间的相互调用，利人利己。</p>
+<h3 id="node.js-中的模块化">2. Node.js 中的模块化</h3>
+<h4 id="node.js-中模块的分类">2.1 Node.js 中模块的分类</h4>
+<p>Node.js 中根据模块来源的不同，将模块分为了 3 大类，分别是：</p>
+<ul>
+<li>内置模块（内置模块是由 Node.js 官方提供的，例如 fs、path、http 等）</li>
+<li>自定义模块（用户创建的每个 .js 文件，都是自定义模块）</li>
+<li>第三方模块（由第三方开发出来的模块，并非官方提供的内置模块，也不是用户创建的自定义模块，使用前需要先下载）</li>
+</ul>
+<h4 id="加载模块">2.2 加载模块</h4>
+<p>使用强大的 require() 方法，可以加载需要的内置模块、用户自定义模块、第三方模块进行使用。例如：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145330186.png" srcset="/img/loading.gif" lazyload class="">
+<p>注意：使用 require() 方法加载其它模块时，会执行被加载模块中的代码。</p>
+<h4 id="node.js-中的模块作用域">2.3 Node.js 中的模块作用域</h4>
+<h5 id="什么是模块作用域">1. 什么是模块作用域</h5>
+<p>和函数作用域类似，在自定义模块中定义的变量、方法等成员，只能在当前模块内被访问，这种模块级别的访问限制，叫做<strong>模块作用域</strong>。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145406719.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="模块作用域的好处">2. 模块作用域的好处</h5>
+<p>防止了全局变量污染的问题</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145442859.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="向外共享模块作用域中的成员">2.4 向外共享模块作用域中的成员</h4>
+<h5 id="module-对象">1. module 对象</h5>
+<p>在每个 .js 自定义模块中都有一个 module 对象，它里面存储了和当前模块有关的信息，打印如下：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145502616.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="module.exports-对象">2. module.exports 对象</h5>
+<p>在自定义模块中，可以使用 module.exports 对象，将模块内的成员共享出去，供外界使用。</p>
+<p>外界用 require() 方法导入自定义模块时，得到的就是 module.exports 所指向的对象。</p>
+<h5 id="共享成员时的注意点">3. 共享成员时的注意点</h5>
+<p>使用 require() 方法导入模块时，导入的结果，<strong>永远以</strong> <strong>module.exports</strong> <strong>指向的对象为准</strong>。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145522908.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="exports-对象">4. exports 对象</h5>
+<p>由于 module.exports 单词写起来比较复杂，为了简化向外共享成员的代码，Node 提供了 exports 对象。默认情况下，exports 和 module.exports 指向同一个对象。最终共享的结果，还是以 module.exports 指向的对象为准。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145535052.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="exports-和-module.exports-的使用误区">4. exports 和 module.exports 的使用误区</h5>
+<p>时刻谨记，require() 模块时，得到的永远是 module.exports 指向的对象：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628145607392.png" srcset="/img/loading.gif" lazyload class="">
+<p><strong>注意：</strong>为了防止混乱，建议大家不要在同一个模块中同时使用 exports 和 module.exports</p>
+<h4 id="node.js-中的模块化规范">2.5 Node.js 中的模块化规范</h4>
+<p>Node.js 遵循了 CommonJS 模块化规范，CommonJS 规定了模块的特性和各模块之间如何相互依赖。</p>
+<p>CommonJS 规定：</p>
+<p>①每个模块内部，module 变量代表当前模块。</p>
+<p>②module 变量是一个对象，它的 exports 属性（即 module.exports）是对外的接口。</p>
+<p>③加载某个模块，其实是加载该模块的 module.exports 属性。require() 方法用于加载模块。</p>
+<h3 id="npm与包">3. npm与包</h3>
+<h4 id="包">3.1 包</h4>
+<h5 id="什么是包">1. 什么是包</h5>
+<p>Node.js 中的第三方模块又叫做包。</p>
+<p>就像电脑和计算机指的是相同的东西，第三方模块和包指的是同一个概念，只不过叫法不同。</p>
+<h5 id="包的来源">2. 包的来源</h5>
+<p>不同于 Node.js 中的内置模块与自定义模块，包是由第三方个人或团队开发出来的，免费供所有人使用。</p>
+<p><strong>注意</strong>：Node.js 中的包都是免费且开源的，不需要付费即可免费下载使用。</p>
+<h5 id="为什么需要包">3. 为什么需要包</h5>
+<p>由于 Node.js 的内置模块仅提供了一些底层的 API，导致在基于内置模块进行项目开发的时，效率很低。</p>
+<p>包是基于内置模块封装出来的，提供了更高级、更方便的 API，极大的提高了开发效率。</p>
+<p>包和内置模块之间的关系，类似于 jQuery 和 浏览器内置 API 之间的关系。</p>
+<h5 id="从哪里下载包">4. 从哪里下载包</h5>
+<p>国外有一家 IT 公司，叫做 <strong>npm, Inc.</strong> 这家公司旗下有一个非常著名的网站： https://www.npmjs.com/ ，它是<strong>全球最大的包共享平台</strong>，你可以从这个网站上搜索到任何你需要的包，只要你有足够的耐心！</p>
+<p>到目前位置，全球约 1100 多万的开发人员，通过这个包共享平台，开发并共享了超过 120 多万个包 供我们使用。</p>
+<p><strong>npm, Inc.</strong> <strong>公司</strong>提供了一个地址为 https://registry.npmjs.org/ 的服务器，来对外共享所有的包，我们可以从这个服务器上下载自己所需要的包。</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>从 https://www.npmjs.com/ 网站上搜索自己所需要的包</li>
+<li>从 https://registry.npmjs.org/ 服务器上下载自己需要的包</li>
+</ul>
+<h5 id="如何下载包">5. 如何下载包</h5>
+<p><strong>npm, Inc.</strong> <strong>公司</strong>提供了一个包管理工具，我们可以使用这个包管理工具，从 https://registry.npmjs.org/ 服务器把需要的包下载到本地使用。</p>
+<p>这个包管理工具的名字叫做 Node Package Manager（简称 npm 包管理工具），这个包管理工具随着 Node.js 的安装包一起被安装到了用户的电脑上。</p>
+<p>大家可以在终端中执行 <strong>npm -v</strong> 命令，来查看自己电脑上所安装的 npm 包管理工具的版本号：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150158708.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="npm-初体验">3.2 npm 初体验</h4>
+<h5 id="格式化时间的传统做法">1. 格式化时间的传统做法</h5>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150222187.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="格式化时间的高级做法">2. 格式化时间的高级做法</h5>
+<p>①使用 npm 包管理工具，在项目中安装格式化时间的包 moment</p>
+<p>②使用 require() 导入格式化时间的包</p>
+<p>③参考 moment 的官方 API 文档对时间进行格式化</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150321040.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="在项目中安装包的命令">3. 在项目中安装包的命令</h4>
+<p>如果想在项目中安装指定名称的包，需要运行如下的命令：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150400382.png" srcset="/img/loading.gif" lazyload class="">
+<p>上述的装包命令，可以简写成如下格式：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150406561.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="初次装包后多了哪些文件">4. 初次装包后多了哪些文件</h5>
+<p>初次装包完成后，在项目文件夹下多一个叫做 node_modules 的文件夹和 package-lock.json 的配置文件。</p>
+<p>其中：</p>
+<p>node_modules 文件夹用来存放所有已安装到项目中的包。require() 导入第三方包时，就是从这个目录中查找并加载包。</p>
+<p>package-lock.json 配置文件用来记录 node_modules 目录下的每一个包的下载信息，例如包的名字、版本号、下载地址等。</p>
+<p>注意：程序员不要手动修改 node_modules 或 package-lock.json 文件中的任何代码，npm 包管理工具会自动维护它们。</p>
+<h5 id="安装指定版本的包">5. 安装指定版本的包</h5>
+<p>默认情况下，使用 npm install 命令安装包的时候，会自动安装最新版本的包。如果需要安装指定版本的包，可以在包名之后，通过 @ 符号指定具体的版本，例如：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150440375.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="包的语义化版本规范">6. 包的语义化版本规范</h5>
+<p>包的版本号是以“点分十进制”形式进行定义的，总共有三位数字，例如 <strong>2.24.0</strong></p>
+<p>其中每一位数字所代表的的含义如下：</p>
+<p>第1位数字：大版本</p>
+<p>第2位数字：功能版本</p>
+<p>第3位数字：Bug修复版本</p>
+<p>版本号提升的规则：只要前面的版本号增长了，则后面的版本号归零。</p>
+<h4 id="包管理配置文件">3.3 包管理配置文件</h4>
+<p>npm 规定，在项目根目录中，<strong>必须</strong>提供一个叫做 package.json 的包管理配置文件。用来记录与项目有关的一些配置信息。例如：</p>
+<ul>
+<li>项目的名称、版本号、描述等</li>
+<li>项目中都用到了哪些包</li>
+<li>哪些包只在开发期间会用到</li>
+<li>那些包在开发和部署时都需要用到</li>
+</ul>
+<h5 id="多人协作的问题">1. 多人协作的问题</h5>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150529540.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="如何记录项目中安装了哪些包">2. 如何记录项目中安装了哪些包</h5>
+<p>在项目根目录中，创建一个叫做 package.json 的配置文件，即可用来记录项目中安装了哪些包。从而方便剔除 node_modules 目录之后，在团队成员之间共享项目的源代码。</p>
+<p>注意：今后在项目开发中，一定要把 node_modules 文件夹，添加到 .gitignore 忽略文件中。</p>
+<h5 id="快速创建-package.json">3. 快速创建 package.json</h5>
+<p>npm 包管理工具提供了一个快捷命令，可以在执行命令时所处的目录中，快速创建 package.json 这个包管理配置文件：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150609347.png" srcset="/img/loading.gif" lazyload class="">
+<p>注意：</p>
+<p>①上述命令只能在英文的目录下成功运行！所以，项目文件夹的名称一定要使用英文命名，不要使用中文，不能出现空格。</p>
+<p>②运行 npm install 命令安装包的时候，npm 包管理工具会自动把包的名称和版本号，记录到 package.json 中。</p>
+<h5 id="dependencies-节点">4. dependencies 节点</h5>
+<p>package.json 文件中，有一个 dependencies 节点，专门用来记录您使用 npm install 命令安装了哪些包。</p>
+<h5 id="一次性安装所有的包">5. 一次性安装所有的包</h5>
+<p>当我们拿到一个剔除了 node_modules 的项目之后，需要先把所有的包下载到项目中，才能将项目运行起来。</p>
+<p>否则会报类似于下面的错误：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150647133.png" srcset="/img/loading.gif" lazyload class="">
+<p>可以运行 npm install 命令（或 npm i）一次性安装所有的依赖包：</p>
+<h5 id="卸载包">6. 卸载包</h5>
+<p>可以运行 npm uninstall 命令，来卸载指定的包：</p>
+<p>注意：npm uninstall 命令执行成功后，会把卸载的包，自动从 package.json 的 dependencies 中移除掉。</p>
+<h5 id="devdependencies-节点">7. devDependencies 节点</h5>
+<p>如果某些包<strong>只在项目开发阶段</strong>会用到，在<strong>项目上线之后不会用到</strong>，则建议把这些包记录到 devDependencies 节点中。</p>
+<p>与之对应的，如果某些包在开发和项目上线之后都需要用到，则建议把这些包记录到 dependencies 节点中。</p>
+<p>您可以使用如下的命令，将包记录到 devDependencies 节点中：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150728661.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="解决下包速度慢的问题">3.4 解决下包速度慢的问题</h4>
+<h5 id="为什么下包速度慢">1. 为什么下包速度慢</h5>
+<p>在使用 npm 下包的时候，默认从国外的 https://registry.npmjs.org/ 服务器进行下载，此时，网络数据的传输需要经过漫长的海底光缆，因此下包速度会很慢。</p>
+<p>扩展阅读 - 海底光缆：</p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/海底光缆/4107830">https://baike.baidu.com/item/%E6%B5%B7%E5%BA%95%E5%85%89%E7%BC%86/4107830</a></p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/中美海底光缆/10520363">https://baike.baidu.com/item/%E4%B8%AD%E7%BE%8E%E6%B5%B7%E5%BA%95%E5%85%89%E7%BC%86/10520363</a></p>
+<p>https://baike.baidu.com/item/APG/23647721?fr=aladdin</p>
+<h5 id="淘宝-npm-镜像服务器">2. 淘宝 NPM 镜像服务器</h5>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150911368.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="切换-npm-的下包镜像源">3. 切换 npm 的下包镜像源</h5>
+<p>下包的镜像源，指的就是下包的服务器地址。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628150935695.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="nrm">4. nrm</h5>
+<p>为了更方便的切换下包的镜像源，我们可以安装 <strong>nrm</strong> 这个小工具，利用 nrm 提供的终端命令，可以快速查看和切换下包的镜像源。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151101118.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="包的分类">3.5 包的分类</h4>
+<p>使用 npm 包管理工具下载的包，共分为两大类，分别是：</p>
+<ul>
+<li>项目包</li>
+<li>全局包</li>
+</ul>
+<h5 id="项目包">1. 项目包</h5>
+<p>那些被安装到项目的 node_modules 目录中的包，都是项目包。</p>
+<p>项目包又分为两类，分别是：</p>
+<ul>
+<li>开发依赖包（被记录到 devDependencies 节点中的包，只在开发期间会用到）</li>
+<li>核心依赖包（被记录到 dependencies 节点中的包，在开发期间和项目上线之后都会用到）</li>
+</ul>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151318545.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="全局包">2. 全局包</h5>
+<p>在执行 npm install 命令时，如果提供了 -g 参数，则会把包安装为全局包。</p>
+<p>全局包会被安装到 C:_modules 目录下。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151527577.png" srcset="/img/loading.gif" lazyload class="">
+<p>注意：</p>
+<p>①只有工具性质的包，才有全局安装的必要性。因为它们提供了好用的终端命令。</p>
+<p>②判断某个包是否需要全局安装后才能使用，可以参考官方提供的使用说明即可。</p>
+<h5 id="i5ting_toc">3. i5ting_toc</h5>
+<p>i5ting_toc 是一个可以把 md 文档转为 html 页面的小工具，使用步骤如下：</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628151547666.png" srcset="/img/loading.gif" lazyload class="">
+<h4 id="规范的包结构">3.6 规范的包结构</h4>
+<p>在清楚了包的概念、以及如何下载和使用包之后，接下来，我们深入了解一下包的内部结构。</p>
+<p>一个规范的包，它的组成结构，必须符合以下 3 点要求：</p>
+<p>①包必须以单独的目录而存在</p>
+<p>②包的顶级目录下要必须包含 package.json 这个包管理配置文件</p>
+<p>③package.json 中必须包含 name，version，main 这三个属性，分别代表包的名字、版本号、包的入口。</p>
+<p>注意：以上 3 点要求是一个规范的包结构必须遵守的格式，关于更多的约束，可以参考如下网址：</p>
+<p>https://yarnpkg.com/zh-Hans/docs/package-json</p>
+<h4 id="开发属于自己的包">3.7 开发属于自己的包</h4>
+<h5 id="需要实现的功能">1. 需要实现的功能</h5>
+<p>① 格式化日期</p>
+<p>② 转义 HTML 中的特殊字符</p>
+<p>③ 还原 HTML 中的特殊字符</p>
+<h5 id="初始化包的基本结构">2. 初始化包的基本结构</h5>
+<p>①新建 itheima-tools 文件夹，作为包的根目录</p>
+<p>②在 itheima-tools 文件夹中，新建如下三个文件：</p>
+<ul>
+<li>package.json （包管理配置文件）</li>
+<li>index.js （包的入口文件）</li>
+<li>README.md （包的说明文档）</li>
+</ul>
+<ol start="3" type="1">
+<li><h5 id="初始化-package.json">初始化 package.json</h5></li>
+</ol>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628153428183.png" srcset="/img/loading.gif" lazyload class="">
+<p>关于更多 license 许可协议相关的内容，可参考 https://www.jianshu.com/p/86251523e898</p>
+<h4 id="发布包">3.8 发布包</h4>
+<h5 id="注册-npm-账号">1. 注册 npm 账号</h5>
+<p>①访问 https://www.npmjs.com/ 网站，点击 sign up 按钮，进入注册用户界面</p>
+<p>②填写账号相关的信息：Full Name、Public Email、Username、Password</p>
+<p>③点击 Create an Account 按钮，注册账号</p>
+<p>④登录邮箱，点击验证链接，进行账号的验证</p>
+<h5 id="登录-npm-账号">2. 登录 npm 账号</h5>
+<p>npm 账号注册完成后，可以在终端中执行 npm login 命令，依次输入用户名、密码、邮箱后，即可登录成功。</p>
+<img src="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/%E6%A8%A1%E5%9D%97%E5%8C%96/image-20220628152549855.png" srcset="/img/loading.gif" lazyload class="">
+<h5 id="把包发布到-npm-上">3. 把包发布到 npm 上</h5>
+<p>将终端切换到包的根目录之后，运行 npm publish 命令，即可将包发布到 npm 上（注意：包名不能雷同）。</p>
+<h5 id="删除已发布的包">4. 删除已发布的包</h5>
+<p>运行 npm unpublish 包名 --force 命令，即可从 npm 删除已发布的包。</p>
+<p>注意：</p>
+<p>①npm unpublish 命令只能删除 72 小时以内发布的包</p>
+<p>②npm unpublish 删除的包，在 24 小时内不允许重复发布</p>
+<p>③发布包的时候要慎重，尽量不要往 npm 上发布没有意义的包！</p>
+<h3 id="模块的加载机制">4. 模块的加载机制</h3>
+<h4 id="优先从缓存中加载">4.1 优先从缓存中加载</h4>
+<p><strong>模块在第一次加载后会被缓存</strong>。 这也意味着多次调用 require() 不会导致模块的代码被执行多次。</p>
+<p>注意：不论是内置模块、用户自定义模块、还是第三方模块，它们都会优先从缓存中加载，从而提高模块的加载效率。</p>
+<h4 id="内置模块的加载机制">4.2 内置模块的加载机制</h4>
+<p>内置模块是由 Node.js 官方提供的模块，内置模块的加载优先级最高。</p>
+<p>例如，require('fs') 始终返回内置的 fs 模块，即使在 node_modules 目录下有名字相同的包也叫做 fs。</p>
+<h4 id="自定义模块的加载机制">4.3 自定义模块的加载机制</h4>
+<p>使用 require() 加载自定义模块时，必须指定以 ./ 或 ../ 开头的路径标识符。在加载自定义模块时，如果没有指定 ./ 或 ../ 这样的路径标识符，则 node 会把它当作内置模块或第三方模块进行加载。</p>
+<p>同时，在使用 require() 导入自定义模块时，如果省略了文件的扩展名，则 Node.js 会按顺序分别尝试加载以下的文件：</p>
+<p>①按照确切的文件名进行加载</p>
+<p>②补全 .js 扩展名进行加载</p>
+<p>③补全 .json 扩展名进行加载</p>
+<p>④补全 .node 扩展名进行加载</p>
+<p>⑤加载失败，终端报错</p>
+<h4 id="第三方模块的加载机制">4.4 第三方模块的加载机制</h4>
+<p>如果传递给 require() 的模块标识符不是一个内置模块，也没有以 ‘./’ 或 ‘../’ 开头，则 Node.js 会从当前模块的父目录开始，尝试从 /node_modules 文件夹中加载第三方模块。</p>
+<p>如果没有找到对应的第三方模块，则移动到再上一层父目录中，进行加载，直到文件系统的根目录。</p>
+<p>例如，假设在 'C:.js' 文件里调用了 require('tools')，则 Node.js 会按以下顺序查找：</p>
+<p>① C:_modules</p>
+<p>② C:_modules</p>
+<p>③ C:_modules</p>
+<p>④ C:_modules</p>
+<h4 id="目录作为模块">4.5 目录作为模块</h4>
+<p>当把目录作为模块标识符，传递给 require() 进行加载的时候，有三种加载方式：</p>
+<p>①在被加载的目录下查找一个叫做 package.json 的文件，并寻找 main 属性，作为 require() 加载的入口</p>
+<p>②如果目录里没有 package.json 文件，或者 main 入口不存在或无法解析，则 Node.js 将会试图加载目录下的 index.js 文件。</p>
+<p>③如果以上两步都失败了，则 Node.js 会在终端打印错误消息，报告模块的缺失：Error: Cannot find module 'xxx'</p>
+
+              
+            </div>
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%89%8D%E7%AB%AF/Node/" class="category-chain-item">Node</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/06/28/%E5%89%8D%E7%AB%AF/Node/Express/" title="Express">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Express</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/06/27/%E6%9D%82%E9%A1%B9/Nginx/" title="Nginx">
+                        <span class="hidden-mobile">Nginx</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

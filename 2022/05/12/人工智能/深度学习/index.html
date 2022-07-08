@@ -16,20 +16,40 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="深度学习">
+    <meta name="description" content="[toc] 自然语言处理 1 单词含义的表示方法 1.1 同义词词典（WordNet）  原理：通过建立单词之间的联系（局部整体、上位下位）来使机器理解单词含义 缺陷：  人工建立单词关系网络成本高 单词关系变化迅速，人工建立关系网难以及时更新 难以表示单词之间微妙的联系   1.2 计数方法  原理：  基于语料库（现成的文章）自动提取单词内容（主流） 用向量表示单词 分布式假设：单词的含义由其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习进阶">
 <meta property="og:url" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Solaris">
+<meta property="og:description" content="[toc] 自然语言处理 1 单词含义的表示方法 1.1 同义词词典（WordNet）  原理：通过建立单词之间的联系（局部整体、上位下位）来使机器理解单词含义 缺陷：  人工建立单词关系网络成本高 单词关系变化迅速，人工建立关系网难以及时更新 难以表示单词之间微妙的联系   1.2 计数方法  原理：  基于语料库（现成的文章）自动提取单词内容（主流） 用向量表示单词 分布式假设：单词的含义由其">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616095618837.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616101049059.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616101512323.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616102641290.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616103051899.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616105815062.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220617112858189.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220617115040120.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220617115127417.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145429464.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145645795.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145803314.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145824127.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619150438964.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619160157195.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619160820934.png">
+<meta property="og:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619162038931.png">
 <meta property="article:published_time" content="2022-05-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-10T00:53:45.011Z">
+<meta property="article:modified_time" content="2022-06-19T08:42:11.130Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="learning">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616095618837.png">
   
   
   
-  <title>深度学习 - Solaris</title>
+  <title>深度学习进阶 - Solaris</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -173,7 +193,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="深度学习"></span>
+            <span id="subtitle" data-typed-text="深度学习进阶"></span>
           
         </div>
 
@@ -197,7 +217,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          0 字
+          1.8k 字
         
       </span>
     
@@ -209,7 +229,7 @@
         
         
           <!-- compatible with older versions-->
-          1 分钟
+          16 分钟
         
       </span>
     
@@ -247,17 +267,252 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">深度学习</h1>
+            <h1 style="display: none">深度学习进阶</h1>
             
             <div class="markdown-body">
               
-              
+              <p>[toc]</p>
+<h1 id="自然语言处理">自然语言处理</h1>
+<h2 id="单词含义的表示方法">1 单词含义的表示方法</h2>
+<h3 id="同义词词典wordnet">1.1 同义词词典（WordNet）</h3>
+<ul>
+<li>原理：通过建立单词之间的联系（局部整体、上位下位）来使机器理解单词含义</li>
+<li>缺陷：
+<ul>
+<li>人工建立单词关系网络成本高</li>
+<li>单词关系变化迅速，人工建立关系网难以及时更新</li>
+<li>难以表示单词之间微妙的联系</li>
+</ul></li>
+</ul>
+<h3 id="计数方法">1.2 计数方法</h3>
+<ul>
+<li><p>原理：</p>
+<ul>
+<li><p>基于语料库（现成的文章）自动提取单词内容（<strong>主流</strong>）</p></li>
+<li><p>用向量表示单词</p></li>
+<li><p><strong>分布式假设</strong>：单词的含义由其周围的单词形成（单词本身没有含义，单词的含义来自于上下文语境）</p></li>
+<li><p>共现矩阵：用其他所有单词在某一单词上下文出现次数形成的矩阵来表示单词</p></li>
+<li><p>余弦相似度：表示不同单词向量之间的相似度</p></li>
+<li><p>点互信息：为了解决the、car之间存在的并非相似含义的高相似性，将单词在文本中出现频率引入相似性的考量范围</p></li>
+<li><p>PPMI矩阵：将点互信息引入共现矩阵</p></li>
+<li><p>向量降维：当单词数量过多时，PPMI矩阵很大，而且因为很多单词之间无关联，故可以保留重要信息的基础上进行向量降维</p>
+<ul>
+<li>将二维数据压缩成为一维数据</li>
+<li>可行性：数据之间关系是重要信息，压缩后数据之间关系信息被大部分保留下来</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616095618837.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>方法：SVG（奇异值分解）、SVG改进方法如：Truncated SVD</li>
+</ul></li>
+</ul></li>
+<li><p>PTB语料库：word2vec发明者提供的语料库，该语料库对原始文本数据进行了预处理</p></li>
+<li><p>缺陷：</p>
+<ul>
+<li>计算量极大</li>
+<li>需要一次输入全部数据</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616101049059.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul></li>
+</ul>
+<h3 id="推理方法word2vec">1.3 推理方法（word2vec）</h3>
+<ul>
+<li>原理：
+<ul>
+<li>通过上下文，推测当前会出现什么单词</li>
+<li>基本任务：解决上述问题，引入神经网络，输入上下文，给出当前位置可能出现的单词</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616101512323.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul></li>
+<li>神经网络对单词进行编码：
+<ul>
+<li>ont-hot编码：只有一个数是1，其余均是0</li>
+</ul></li>
+<li>word2vec：
+<ul>
+<li>原本指的是程序或者工具，如今也指神经网络模型</li>
+<li>CBOW：
+<ul>
+<li>根据上下文预测目标词的神经网络</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616102641290.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul></li>
+<li>skip-gram：
+<ul>
+<li>反转了CBOW的任务，从目标词预测上下文</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616103051899.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul></li>
+<li>CBOW学习速度快，skip-gram预测性能更好</li>
+</ul></li>
+</ul>
+<h3 id="计数法和推理法比较">1.4 计数法和推理法比较</h3>
+<ul>
+<li>推理法允许增量处理输入数据</li>
+<li>推理法可以解决<code>king - man +woman = queen</code>这类<strong>推理问题</strong></li>
+<li>就单词相似性而言，两者性能相当</li>
+<li>GloVe 方法，结合了计数法和推理法</li>
+</ul>
+<h3 id="分布式表示好处">1.5 分布式表示好处</h3>
+<ul>
+<li>有利于迁移学习，即将学习得到的分布式表示用在其他应用中</li>
+<li>将单词和文档表示为固定长度向量，可以应用传统机器学习算法进行进一步处理</li>
+</ul>
+<h3 id="应用场景">1.6 应用场景</h3>
+<ul>
+<li>邮件分类</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220616105815062.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul>
+<h2 id="循环神经网络">2 循环神经网络</h2>
+<h3 id="rnn和lstm">2.1 RNN和LSTM</h3>
+<ul>
+<li>前馈神经网络的痛点：无法学习时序数据模式</li>
+<li>语言模型：
+<ul>
+<li>给出一个单词序列，预测该单词序列是否是一个自然语言句子</li>
+<li>应用：机器翻译、语音识别</li>
+<li>CBOW无法考量上下文顺序关系</li>
+</ul></li>
+<li>RNN能记忆上下文信息</li>
+<li>RNN层结构：</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220617112858189.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>训练方法：
+<ul>
+<li>BPTT（基于时间的反向传播）
+<ul>
+<li>问题：时序数据变长，内存占用增多</li>
+</ul></li>
+<li>Truncated BPTT（反向传播链条适当截断）</li>
+</ul></li>
+<li>痛点：
+<ul>
+<li>上面的RNN结构十分简单，效果不好</li>
+<li>被LSTM或GRU替代</li>
+</ul></li>
+<li>LSTM：
+<ul>
+<li>在简单RNN基础上加入了门结构</li>
+<li>基于门可以学习到时序数据的长期依赖关系</li>
+</ul></li>
+<li>梯度消失和梯度爆炸
+<ul>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220617115040120.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220617115127417.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>梯度爆炸:
+<ul>
+<li>概念: 随着反向传播的进行,梯度发散,导致无法正确学习</li>
+<li>解决: 梯度裁剪,当梯度大于阈值时,减小梯度值</li>
+</ul></li>
+<li>梯度消失:
+<ul>
+<li>概念: 随着反向传播的进行,梯度收敛为0,导致无法正常学习</li>
+<li>解决: 需要从根本上改变网络结构,为此,提出了Gated RNN,LSTM就是一种Gated RNN结构</li>
+</ul></li>
+<li>LSTM门结构
+<ul>
+<li>引入了门的概念,门是指一种对数据进行0-1缩放的结构</li>
+<li>输出门: 对输出进行0-1之间的控制 (其中X为对应元素乘积)</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145429464.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>遗忘门: 删除部分记忆信息</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145645795.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>添加记忆信息</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145803314.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>输入门:</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619145824127.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul></li>
+<li>LSTM加深</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619150438964.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>抑制过拟合
+<ul>
+<li>降低模型复杂度</li>
+<li>增加训练数据</li>
+<li>惩罚正则化,惩罚大权重</li>
+<li>使用Dropout
+<ul>
+<li>常规Dropout用于深度方向</li>
+<li>变分Dropout用于时间方向</li>
+</ul></li>
+</ul></li>
+<li>权重共享:简化学习过程</li>
+</ul></li>
+<li>RNN和LSTM的简单应用
+<ul>
+<li>文本生成</li>
+<li>seq2seq网络模型, 实现机器翻译、聊天机器人、邮件回复</li>
+<li>学习加法逻辑</li>
+</ul></li>
+<li>seq2seq结构
+<ul>
+<li>两个RNN,一个充当编码器,一个充当解码器</li>
+<li>优化:
+<ul>
+<li>反转输入数据训练</li>
+<li>偷窥(Peeky),将编码器输出传递到解码器的每个以时间方向RNN结构中</li>
+</ul></li>
+<li>应用:
+<ul>
+<li>机器翻译</li>
+<li>自动摘要</li>
+<li>问答系统</li>
+<li>算法学习(源码到输出结果的学习)</li>
+<li>图像描述</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="注意力机制">2.2 注意力机制</h3>
+<ul>
+<li>当前seq2seq存在的问题
+<ul>
+<li>无论输入数据多长,编码器输出数据长度一定</li>
+</ul></li>
+<li>改进方法
+<ul>
+<li>编码器改进
+<ul>
+<li>对编码器各个是个隐藏状态向量进行输出</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619160157195.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>双向RNN</li>
+</ul></li>
+<li>解码器改进
+<ul>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619160820934.png" srcset="/img/loading.gif" lazyload class=""></li>
+<li>根据隐藏状态判读LSTM和编码器各隐藏状态的相似程度</li>
+<li><img src="/2022/05/12/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/image-20220619162038931.png" srcset="/img/loading.gif" lazyload class=""></li>
+</ul></li>
+<li>加深层
+<ul>
+<li>Drop</li>
+<li>权重共享</li>
+<li>残差连接(跨层连接)</li>
+</ul></li>
+</ul></li>
+<li>进一步研究
+<ul>
+<li>GNMT: 将上述优化全用了</li>
+<li>Transformer: RNN并行化处理</li>
+<li>NTM: 利用了外部记忆功能</li>
+</ul></li>
+</ul>
 
               
             </div>
             <hr/>
             <div>
               <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="category-chain-item">人工智能</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
   
   
     <div class="post-meta">
@@ -271,52 +526,17 @@
 
 
               
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>深度学习</div>
-      <div>http://example.com/2022/05/12/人工智能/深度学习/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>John Doe</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2022年5月12日</div>
-        </div>
-      
-      
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
-            
-            
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
-        </div>
-      </div>
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
 
               
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/06/13/%E5%89%8D%E7%AB%AF/JavaScript/%E5%BC%82%E6%AD%A5/%E5%BC%82%E6%AD%A5JavaScript/" title="异步JavaScript">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">异步JavaScript</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
